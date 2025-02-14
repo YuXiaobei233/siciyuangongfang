@@ -1,0 +1,5 @@
+your-project/
+├── index.html
+├── styles.css
+└── images/
+    └── avatar.jpg  # 确保头像文件实际存在 

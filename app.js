@@ -51,4 +51,47 @@ document.addEventListener('DOMContentLoaded', () => {
             iframeContainer.style.display = 'none';
         }
     });
+
+    // 首页按钮功能
+    document.querySelector('.home-link').addEventListener('click', (e) => {
+        e.preventDefault()
+        // 关闭工具窗口
+        toolFrame.src = ''
+        iframeContainer.style.display = 'none'
+        // 平滑滚动到顶部
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+    })
+
+    // 修改现有的导航栏点击处理
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                // 关闭工具窗口
+                toolFrame.src = '';
+                iframeContainer.style.display = 'none';
+                
+                // 平滑滚动
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // 添加临时高亮
+                targetSection.style.transition = 'box-shadow 0.5s';
+                targetSection.style.boxShadow = `0 0 0 3px ${getComputedStyle(document.documentElement)
+                    .getPropertyValue('--primary-color')}`;
+                
+                setTimeout(() => {
+                    targetSection.style.boxShadow = 'none';
+                }, 1000);
+            }
+        });
+    });
 }); 
