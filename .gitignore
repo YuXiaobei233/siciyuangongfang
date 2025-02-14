@@ -1,0 +1,21 @@
+# 忽略系统文件
+.DS_Store
+Thumbs.db
+
+# 忽略编辑器文件
+.vscode/
+.idea/
+
+# 忽略临时文件
+*.tmp
+*.temp
+
+# 忽略日志文件
+*.log
+
+# 忽略node模块（虽然当前没有）
+node_modules/
+
+# 忽略构建产物
+dist/
+build/ 

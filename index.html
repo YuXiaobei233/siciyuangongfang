@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四次元工坊</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <h1 class="logo">🧰 四次元工坊</h1>
+            <div class="nav-group">
+                <!-- 主要导航 -->
+                <ul class="nav-links">
+                    <li><a href="#home" class="nav-item">🏠<span class="nav-text">首页</span></a></li>
+                    <li><a href="#tools" class="nav-item">🔧<span class="nav-text">工具集</span></a></li>
+                    <li><a href="#about" class="nav-item">ℹ️<span class="nav-text">关于</span></a></li>
+                </ul>
+                
+                <!-- 功能控制区 -->
+                <div class="nav-controls">
+                    <div class="control-item">
+                        <button class="theme-toggle">
+                            <span class="light-mode">🌞</span>
+                            <span class="dark-mode">🌙</span>
+                        </button>
+                    </div>
+                    <div class="control-item stats">
+                        <div class="usage-counter">
+                            <span class="stats-icon">📈</span>
+                            <span class="stats-count">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 工具展示区 -->
+    <main class="tool-container">
+        <!-- 单个工具卡片 -->
+        <article class="tool-card" data-tool="zimupaiban">
+            <div class="card-header">
+                <svg class="tool-icon" viewBox="0 0 24 24">
+                    <path d="M6 2h12v2H6V2zm0 4h12v2H6V6zm0 4h12v2H6v-2zm0 4h12v2H6v-2zm0 4h12v2H6v-2z"/>
+                </svg>
+                <h2>自动排版表生成器</h2>
+            </div>
+            <p>快速生成可视化排版表，支持多种排版规则</p>
+            <button class="open-tool">立即使用</button>
+        </article>
+
+        <!-- 图片压缩工具卡片 -->
+        <article class="tool-card" data-tool="tupianyasuo">
+            <div class="card-header">
+                <svg class="tool-icon" viewBox="0 0 24 24">
+                    <path d="M8 5h8v2H8V5zm10 14H6V7h12v12zm0-14H6V3h12v2zM4 21h16V5h2v16H2V5h2v16z"/>
+                </svg>
+                <h2>智能图片压缩</h2>
+            </div>
+            <p>在线压缩图片大小，保持画质清晰</p>
+            <button class="open-tool">立即使用</button>
+        </article>
+    </main>
+
+    <!-- 工具加载容器 -->
+    <div class="tool-iframe-container">
+        <iframe class="tool-frame" frameborder="0"></iframe>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 

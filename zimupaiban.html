@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>字幕排版工具</title>
+    <style>
+        /* 符合苹果设计规范的界面样式 */
+        body {
+            font-family: -apple-system, system-ui;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        #preview {
+            white-space: pre-wrap;
+            background: #f5f5f7;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        .editable-result {
+            background: white;
+            border: 1px solid #ddd;
+            resize: vertical; /* 允许垂直调整大小 */
+        }
+    </style>
+</head>
+<body>
+    <h1>字幕排版工具</h1>
+    <div class="container">
+        <div>
+            <h3>输入文本：</h3>
+            <textarea id="input" placeholder="粘贴原始字幕内容..."></textarea>
+        </div>
+        <div>
+            <h3>处理结果（可编辑）：</h3>
+            <textarea id="preview" class="editable-result"></textarea>
+            <button id="copyBtn" style="margin-top: 10px; padding: 8px 16px; background: #007AFF; color: white; border: none; border-radius: 6px; cursor: pointer; float: right;">
+                复制结果
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function processSubtitles(text) {
+            // 新增：删除所有空格
+            text = text.replace(/\s+/g, '');
+            
+            const lineBreakers = new Set(['，', '。', '；']);
+            let result = '';
+            let currentLine = '';
+
+            for (const char of text) {
+                if (lineBreakers.has(char)) {
+                    result += currentLine + '\n';
+                    currentLine = '';
+                } else if (char === '？') {
+                    currentLine += char;
+                    result += currentLine + '\n';
+                    currentLine = '';
+                } else {
+                    currentLine += char;
+                }
+            }
+            return result + currentLine;
+        }
+
+        // 修改为同步两个文本框
+        const inputArea = document.getElementById('input');
+        const previewArea = document.getElementById('preview');
+        
+        inputArea.addEventListener('input', (e) => {
+            previewArea.value = processSubtitles(e.target.value);
+        });
+
+        // 新增结果区域编辑同步功能
+        previewArea.addEventListener('input', (e) => {
+            inputArea.value = e.target.value.replace(/\n/g, '');
+        });
+
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            const text = document.getElementById('preview').value;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('复制成功！');
+            });
+        });
+    </script>
+</body>
+</html> 
