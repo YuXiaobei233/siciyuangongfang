@@ -78,26 +78,21 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(8px);
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 .tool-frame {
     width: 90%;
     height: 80%;
-    border-radius: 20px;
+    border-radius: 15px;
     background: white;
-    animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
+    border: none;
 }
 
 /* 新版导航栏样式 */

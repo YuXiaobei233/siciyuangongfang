@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="tool-page">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今日午餐吃什么？</title>
+    <style>
+        /* 独立页面样式 */
+        .tool-page body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #ff9966, #ff5e62);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        /* 基础样式 */
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #ff9966, #ff5e62);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #ff5e62;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* 食物展示区 */
+        .food-display {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .food-item {
+            font-size: 2em;
+            color: #333;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            position: absolute;
+        }
+
+        .food-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 随机按钮 */
+        .random-btn {
+            background: linear-gradient(45deg, #ff9966, #ff5e62);
+            border: none;
+            padding: 15px 40px;
+            color: white;
+            font-size: 1.2em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255,94,98,0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .random-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255,94,98,0.4);
+        }
+
+        .random-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* 食物图标 */
+        .food-icons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .food-icon {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍚 今日午餐吃什么？ 🥢</h1>
+        
+        <div class="food-display">
+            <div class="food-item" id="foodResult">点击按钮开始随机</div>
+        </div>
+
+        <button class="random-btn" onclick="pickFood()">随机选择</button>
+
+        <div class="food-icons">
+            <div class="food-icon">🍜</div>
+            <div class="food-icon">🍔</div>
+            <div class="food-icon">🥗</div>
+            <div class="food-icon">🍣</div>
+            <div class="food-icon">🍲</div>
+            <div class="food-icon">🍛</div>
+        </div>
+    </div>
+
+    <script>
+        const foods = [
+            '重庆小面', '日式拉面', '韩式拌饭', '港式茶餐厅',
+            '麻辣香锅', '海南鸡饭', '意大利面', '美式汉堡',
+            '沙拉轻食', '寿司拼盘', '酸菜鱼', '黄焖鸡米饭',
+            '广式早茶', '北京烤鸭', '越南河粉', '台湾卤肉饭',
+            '新疆大盘鸡', '兰州牛肉面', '上海生煎包', '湖南剁椒鱼头',
+            '川味火锅', '陕西肉夹馍', '云南过桥米线', '柳州螺蛳粉',
+            '武汉热干面', '南京盐水鸭', '西安羊肉泡馍', '东北锅包肉',
+            '潮汕牛肉丸', '福建沙县小吃', '桂林米粉', '河南烩面',
+            '山西刀削面', '天津狗不理', '长沙臭豆腐', '江西瓦罐汤',
+            '贵州酸汤鱼', '厦门沙茶面', '扬州炒饭', '无锡小笼包',
+            '嘉兴粽子', '宁波汤圆', '苏州阳春面', '广东煲仔饭',
+            '海南清补凉', '台湾蚵仔煎', '澳门葡国鸡', '香港车仔面',
+            '日式咖喱饭', '韩式部队锅', '泰式冬阴功', '越南春卷',
+            '印度咖喱鸡', '新加坡肉骨茶', '马来西亚叻沙', '印尼炒饭',
+            '墨西哥卷饼', '希腊烤肉卷', '土耳其烤肉', '西班牙海鲜饭',
+            '法式焗蜗牛', '德国香肠拼盘', '英式炸鱼薯条', '美式烤肋排',
+            '巴西烤肉', '阿根廷牛排', '摩洛哥塔吉锅', '埃及法拉费',
+            '夏威夷披萨', '加州寿司卷', '地中海沙拉', '北欧烟熏三文鱼',
+            '俄式罗宋汤', '朝鲜冷面', '蒙古手抓肉', '西藏酥油茶',
+            '新疆烤包子', '宁夏手抓羊肉', '青海酿皮', '甘肃牛奶醪糟',
+            '山东煎饼卷大葱', '河北驴肉火烧', '内蒙古烤全羊', '黑龙江锅包肉',
+            '吉林延吉冷面', '辽宁老边饺子', '浙江东坡肉', '安徽臭鳜鱼',
+            '福建佛跳墙', '江西米粉蒸肉', '山东九转大肠', '河南胡辣汤',
+            '湖北三鲜豆皮', '湖南口味虾', '广东白切鸡', '广西柠檬鸭',
+            '海南和乐蟹', '四川夫妻肺片', '贵州丝娃娃', '云南汽锅鸡',
+            '西藏牦牛肉干', '陕西凉皮', '甘肃兰州酿皮', '青海酸奶',
+            '西安腊汁肉夹馍', '羊肉泡馍', '葫芦头泡馍', '小炒泡馍',
+            '秦镇米皮', '宝鸡擀面皮', '岐山臊子面', '油泼扯面',
+            'Biangbiang面', '浆水鱼鱼', '粉汤羊血', '水盆羊肉',
+            '甑糕', '黄桂柿子饼', '镜糕', '蜂蜜凉粽',
+            '卤汁凉粉', '肉丸胡辣汤', '粉蒸肉', '石子馍',
+            '锅盔牙子', '金线油塔', '泡泡油糕', '荞面饸饹',
+            '酸汤水饺', '腊牛肉夹馍', '八宝稀饭', '酸菜炒米',
+            '长安搅团', '户县软面', '彬县御面', '乾县锅盔',
+            '礼泉烙面', '三原蓼花糖', '富平太后饼', '潼关肉夹馍',
+            '汉中热米皮', '安康蒸面', '商洛烩菜', '陕北碗托',
+            '榆林拼三鲜', '延安和杂面', '定边炉馍馍', '绥德油旋',
+            '吴起剁荞面', '志丹羊肉', '子长煎饼', '清涧烙饼'
+        ];
+
+        function pickFood() {
+            const resultElement = document.getElementById('foodResult');
+            resultElement.classList.remove('active');
+            
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * foods.length);
+                resultElement.textContent = foods[randomIndex];
+                resultElement.classList.add('active');
+            }, 300);
+        }
+    </script>
+</body>
+</html> 
